@@ -1,24 +1,34 @@
 from services.pdf_service import extract_text_from_pdf
+from services.ai_service import analyze_resume_with_ai
 
-# Put a real PDF in your project folder and name it my_resume.pdf
+# 1. Read the PDF you used yesterday
 file_path = "Faizan_resume.pdf"
+job_target = "Software Engineer"
 
+print(f"Reading {file_path}...")
+with open(file_path, "rb") as file:
+    raw_bytes = file.read()
+    
+text = extract_text_from_pdf(raw_bytes)
+print("PDF read successfully! Sending to Gemini API (This might take 10-15 seconds)...\n")
+
+# 2. Send the text to our new AI service
 try:
-    print(f"Reading {file_path}...")
+    result = analyze_resume_with_ai(text, job_target)
     
-    # Open the PDF in binary read mode ('rb')
-    with open(file_path, "rb") as file:
-        raw_bytes = file.read()
+    print("--- 🧠 AI ANALYSIS SUCCESSFUL 🧠 ---\n")
+    print(f"ATS Score: {result.ats_score}/100")
+    print(f"Keyword Match: {result.keyword_match_percentage}%\n")
+    
+    print("Exotic Feature 1: Line Rewrite")
+    if result.line_rewrites:
+        print(f"Weak Line: {result.line_rewrites[0].original_line}")
+        print(f"Fix 1: {result.line_rewrites[0].rewritten_options[0]}\n")
+    
+    print("Exotic Feature 2: Sneak Strategy")
+    if result.keyword_strategies:
+        print(f"Missing: {result.keyword_strategies[0].missing_keyword}")
+        print(f"How to sneak it in: {result.keyword_strategies[0].example_sentence}")
         
-    # Send the bytes to our new service
-    text = extract_text_from_pdf(raw_bytes)
-    
-    print("\n--- EXTRACTION SUCCESSFUL ---\n")
-    print(text[:500]) # Print just the first 500 characters so we don't flood the terminal
-    print("\n-----------------------------\n")
-    print(f"Total characters extracted: {len(text)}")
-    
-except FileNotFoundError:
-    print(f"❌ Error: Could not find {file_path}. Make sure you dragged a PDF into the folder!")
 except Exception as e:
     print(f"❌ Error: {str(e)}")
