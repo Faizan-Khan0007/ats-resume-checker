@@ -1,0 +1,9 @@
+# Ignore environment variables (NEVER PUSH THIS)
+.env
+
+# Ignore Python virtual environment
+venv/
+__pycache__/
+
+# Ignore Mac system files if applicable
+.DS_Store
