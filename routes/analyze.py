@@ -31,13 +31,13 @@ async def analyze_resume_endpoint(
     cache_key = generate_cache_key(resume_text, job_role)
     cached_result = get_cached_analysis(cache_key)
 
-    if cached_result:
-        # We have a cache hit! Return instantly, completely skipping the AI.
-        return AnalysisResponse(
-            analysis_id=0, # 0 means it wasn't a new DB entry
-            cached=True,
-            data=cached_result
-        )
+    # if cached_result:
+    #     # We have a cache hit! Return instantly, completely skipping the AI.
+    #     return AnalysisResponse(
+    #         analysis_id=0, # 0 means it wasn't a new DB entry
+    #         cached=True,
+    #         data=cached_result
+    #     )
 
     # 4. Cache Miss -> Call Gemini AI
     try:
