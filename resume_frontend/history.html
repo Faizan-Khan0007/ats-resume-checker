@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis History | ResumeIQ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">Resume<span class="accent-text">IQ</span></a>
+        <div>
+            <a href="history.html" style="color: white; margin-right: 20px;">History</a>
+            <a href="analyze.html" class="btn-primary">New Analysis</a>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div style="margin-bottom: 30px;">
+            <h2>Past Analyses</h2>
+            <p class="subtitle">Review your previous resume ATS scores and target roles.</p>
+        </div>
+
+        <div class="history-grid" id="historyGrid"></div>
+
+        <div id="emptyState" class="drop-zone hidden" style="border: none; margin-top: 40px;">
+            <div class="icon">📭</div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">No analyses found yet.</p>
+            <a href="analyze.html" class="btn-outline">Analyze your first resume</a>
+        </div>
+    </main>
+
+    <script src="history.js"></script>
+</body>
+</html>

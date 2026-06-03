@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine, Base
 import models
-from routes import analyze
+from routes import analyze, history
 
 # This single line tells SQLAlchemy to create all tables defined in models.py!
 Base.metadata.create_all(bind=engine)
@@ -22,6 +22,7 @@ app.add_middleware(
 )
 # connecting the analyze route
 app.include_router(analyze.router)
+app.include_router(history.router)
 
 @app.get("/health")
 def health_check():
