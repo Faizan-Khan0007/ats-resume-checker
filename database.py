@@ -11,8 +11,11 @@ SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
 print(SQLALCHEMY_DATABASE_URL)
 
-# Create engine
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    pool_pre_ping=True,      # Tests the connection before every single query
+    pool_recycle=300,        # Recycles connections every 5 minutes to avoid sudden drops
+)
 
 # Session factory
 SessionLocal = sessionmaker(
