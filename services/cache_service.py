@@ -1,10 +1,14 @@
+import os
 import redis
 import hashlib
 import json
+from dotenv import load_dotenv
 from schemas import ResumeAnalysis
 
-# Connect to our local Redis server
-redis_client = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
+load_dotenv()
+
+redis_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
+redis_client = redis.from_url(redis_url, decode_responses=True)
 
 def generate_cache_key(resume_text: str, job_role: str) -> str:
     """Creates a unique fingerprint for this specific resume and job role combination."""

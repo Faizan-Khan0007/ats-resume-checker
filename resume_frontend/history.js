@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // Fetch data from our new FastAPI endpoint
-        const response = await fetch('http://127.0.0.1:8000/history');
+        const response = await fetch('https://ats-resume-checker-00jy.onrender.com/history');
         
         if (!response.ok) {
             throw new Error('Failed to fetch history from the server.');
