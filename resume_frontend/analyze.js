@@ -8,6 +8,8 @@ const analyzeBtn = document.getElementById('analyzeBtn');
 const uploadForm = document.getElementById('uploadForm');
 const loadingOverlay = document.getElementById('loadingOverlay');
 const errorMessage = document.getElementById('errorMessage');
+// Clear any past results from memory so we start fresh
+localStorage.removeItem('resumeAnalysisResult');
 
 let selectedFile = null;
 
