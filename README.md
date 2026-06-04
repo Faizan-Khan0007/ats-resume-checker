@@ -38,6 +38,7 @@ ResumeIQ is an open-source, production-grade SaaS pipeline engineered to dismant
                       │                                                                        │
                       │                                                                        ▼ (Hydrate State Tables)
                       └────────────────────────◄─────────────────────────────────────── [ Neon PostgreSQL DB ]
+```
 🛠️ Local Development
 Prerequisites
 Python 3.11+
