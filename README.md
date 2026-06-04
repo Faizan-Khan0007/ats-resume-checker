@@ -39,43 +39,83 @@ ResumeIQ is an open-source, production-grade SaaS pipeline engineered to dismant
                       │                                                                        ▼ (Hydrate State Tables)
                       └────────────────────────◄─────────────────────────────────────── [ Neon PostgreSQL DB ]
 ```
-🛠️ Local Development
-Prerequisites
-Python 3.11+
+## 🛠️ Local Development
 
-A Google Gemini AI API key.
+### Prerequisites
 
-Upstash Redis & Neon PostgreSQL database URLs.
+Before getting started, make sure you have:
 
-Quick Start
-Clone the repository:
+- Python 3.11+
+- A Google Gemini API Key
+- Upstash Redis Database URL
+- Neon PostgreSQL Database URL
 
-Bash
-git clone [https://github.com/Faizan-Khan0007/ats-resume-checker.git](https://github.com/Faizan-Khan0007/ats-resume-checker.git)
+---
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/Faizan-Khan0007/ats-resume-checker.git
 cd ats-resume-checker
-Create and activate a virtual environment:
+```
 
-Bash
+---
+
+### 2️⃣ Create and Activate a Virtual Environment
+
+```bash
 python -m venv venv
+```
 
-# On Windows:
+**Windows**
+
+```bash
 venv\Scripts\activate
-# On Mac/Linux:
+```
+
+**Mac/Linux**
+
+```bash
 source venv/bin/activate
-Install dependencies:
+```
 
-Bash
+---
+
+### 3️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
-Create a .env file in the root directory and add your keys:
+```
 
-Code snippet
+---
+
+### 4️⃣ Configure Environment Variables
+
+Create a `.env` file in the project root directory and add the following:
+
+```env
 DATABASE_URL=your_neon_postgres_url
 REDIS_URL=your_upstash_redis_url
 GEMINI_API_KEY=your_gemini_api_key
-Start the server:
+```
 
-Bash
+---
+
+### 5️⃣ Start the Development Server
+
+```bash
 uvicorn main:app --reload
+```
 
-The FastAPI backend will instantly be available at http://localhost:8000.
-Access the auto-generated Swagger UI at http://localhost:8000/docs.
+---
+
+### 6️⃣ Open the Application
+
+Once the server is running:
+
+- **API Base URL:** `http://localhost:8000`
+- **Swagger Documentation:** `http://localhost:8000/docs`
+
+---
+
+✅ The FastAPI backend is now running locally and ready for development.
