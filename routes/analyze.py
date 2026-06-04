@@ -10,7 +10,12 @@ from services.cache_service import generate_cache_key, get_cached_analysis, set_
 # Create a router specifically for analysis endpoints
 router = APIRouter()
 
-@router.post("/analyze", response_model=AnalysisResponse)
+@router.post(
+    "/analyze", 
+    response_model=AnalysisResponse,
+    summary="Analyze a resume",
+    description="Upload a PDF resume and job role. Returns AI-powered ATS score and improvement suggestions."
+)
 async def analyze_resume_endpoint(
     job_role: str = Form(...),
     file: UploadFile = File(...),

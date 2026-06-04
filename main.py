@@ -4,27 +4,41 @@ from database import engine, Base
 import models
 from routes import analyze, history
 
-# This single line tells SQLAlchemy to create all tables defined in models.py!
+# Ensure database tables exist
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="ResumeIQ API",
-    description="AI-powered resume analyzer backend",
-    version="1.0.0"
+    title="🚀 ResumeIQ API",
+    description="""
+    ### An AI-powered resume parsing and ATS optimization engine.
+    
+    This backend parses uploaded PDF resumes, matches them against target job descriptions using the Google Gemini Pro SDK, caches structural evaluations via Redis, and logs analytical metrics securely to a PostgreSQL database instance.
+    
+    **Features:**
+    * 📄 **PDF Text Extraction:** Clean, inline tokenization of unstructured text.
+    * 🤖 **Deterministic AI Schema:** Strict validation using Gemini structured responses.
+    * ⚡ **High-Performance Caching:** 24-hour cache invalidation windows via Upstash Redis.
+    * 📊 **Persistent Audit Logs:** Historical access endpoints for relational tracking.
+    """,
+    version="1.0.0",
+    contact={
+        "name": "Faizan Khan",
+        "url": "https://github.com/Faizan-Khan0007",
+    }
 )
-# Crucial for frontend: allow your HTML pages to talk to this API
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this to your frontend URL
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# connecting the analyze route
-app.include_router(analyze.router)
-app.include_router(history.router)
 
-@app.get("/health")
+app.include_router(analyze.router, tags=["Core Analysis Engine"])
+app.include_router(history.router, tags=["Analytics & History"])
+
+@app.get("/health", tags=["System Monitoring"])
 def health_check():
     return {
         "status": "online",
