@@ -15,7 +15,7 @@ ResumeIQ is an open-source, production-grade SaaS pipeline engineered to dismant
 * **Frontend Runtime:** Pure Vanilla Static Architecture (ES6 JavaScript / Custom Flex-Grid CSS3 Engine) hosted over global Edge Networks on **Vercel CDN**.
 * **API Microservice:** Asynchronous **FastAPI (Python 3.11+)** contextually isolated on **Render**.
 * **Relational Storage:** Serverless transactional **PostgreSQL** provisioned over compute-decoupled architectures on **Neon Database**.
-* **Caching & Performance Optimization:** Low-latency storage instance utilizing **Upstash Redis** for real-time query deduplication.
+* **Caching & Performance Optimization:** Low-latency storage instance utilizing **Upstash Redis** for real-time query deduplication and 24-hour TTL invalidation.
 * **Upstream Inference Engine:** Modern structural generation utilizing the official **Google GenAI SDK** targeting **Gemini 2.5 Flash**.
 
 ---
@@ -27,18 +27,47 @@ ResumeIQ is an open-source, production-grade SaaS pipeline engineered to dismant
 ---
 
 ## 📊 Infrastructure Architecture Flow
-```text
-[ Client Web UI ] ──( Multipart Form Upload )──> [ FastAPI Server on Render ]
-                                                           │
-                      ┌────────────────────────────────────┴───────────────────────────────────┐
-                      ▼ (Check Cache Fingerprint)                                              ▼ (If Cache Miss: Extract Binary Text)
-           [ Upstash Redis Memory ]                                                    [ Google Gemini AI Engine ]
-                      │                                                                        │
-        (Return Cached Structural JSON)                                            (Emit Deterministic JSON Object)
-                      │                                                                        │
-                      │                                                                        ▼ (Hydrate State Tables)
-                      └────────────────────────◄─────────────────────────────────────── [ Neon PostgreSQL DB ]
+
+```mermaid
+graph TD
+    %% Define Styles
+    classDef frontend fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff;
+    classDef backend fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff;
+    classDef database fill:#f59e0b,stroke:#b45309,stroke-width:2px,color:#fff;
+    classDef external fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#fff;
+
+    %% Nodes
+    Client["💻 Client (Vanilla JS)"]:::frontend
+    
+    subgraph ResumeIQ Backend
+        API{"🚀 FastAPI Engine"}:::backend
+        PDF["📄 PyPDF2 Extractor"]:::backend
+        Cache["⚡ Redis (Cache)"]:::database
+        DB["🗄️ PostgreSQL (SQLAlchemy)"]:::database
+    end
+    
+    AI["🧠 Google Gemini API (gemini-2.5-flash)"]:::external
+
+    %% Connections
+    Client -- "1. Uploads PDF & Target Role" --> API
+    
+    API -- "2. Extracts text from file" --> PDF
+    PDF -- "Raw Text String" --> API
+    
+    API -- "3. Checks if MD5 Hash exists" --> Cache
+    Cache -. "If Cache Hit: Return Instantly" .-> API
+    
+    API -- "4. If Cache Miss: Send Text & Schema" --> AI
+    AI -- "Returns Strict JSON" --> API
+    
+    API -- "5. Saves AI Analysis & Resume Data" --> DB
+    API -- "6. Caches JSON for 24 Hours" --> Cache
+    
+    API -- "7. Returns JSON Data" --> Client
 ```
+
+---
+
 ## 🛠️ Local Development
 
 ### Prerequisites
