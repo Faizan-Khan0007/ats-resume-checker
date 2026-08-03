@@ -29,41 +29,43 @@ ResumeIQ is an open-source, production-grade SaaS pipeline engineered to dismant
 ## 📊 Infrastructure Architecture Flow
 
 ```mermaid
-graph TD
+flowchart TD
     %% Define Styles
     classDef frontend fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff;
     classDef backend fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff;
     classDef database fill:#f59e0b,stroke:#b45309,stroke-width:2px,color:#fff;
     classDef external fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#fff;
 
-    %% Nodes
+    %% Top Level
     Client["💻 Client (Vanilla JS)"]:::frontend
-    
+    AI["🧠 Google Gemini API (gemini-2.5-flash)"]:::external
+
     subgraph ResumeIQ Backend
         API{"🚀 FastAPI Engine"}:::backend
+        
+        %% Bottom Level Services
         PDF["📄 PyPDF2 Extractor"]:::backend
         Cache["⚡ Redis (Cache)"]:::database
         DB["🗄️ PostgreSQL (SQLAlchemy)"]:::database
     end
-    
-    AI["🧠 Google Gemini API (gemini-2.5-flash)"]:::external
 
-    %% Connections
+    %% Connections (Client to API)
     Client -- "1. Uploads PDF & Target Role" --> API
+    API -- "7. Returns JSON Data" --> Client
     
+    %% Connections (API to AI)
+    API -- "4. If Cache Miss: Send Text & Schema" --> AI
+    AI -- "Returns Strict JSON" --> API
+    
+    %% Connections (API to Internal Services)
     API -- "2. Extracts text from file" --> PDF
     PDF -- "Raw Text String" --> API
     
     API -- "3. Checks if MD5 Hash exists" --> Cache
     Cache -. "If Cache Hit: Return Instantly" .-> API
-    
-    API -- "4. If Cache Miss: Send Text & Schema" --> AI
-    AI -- "Returns Strict JSON" --> API
-    
-    API -- "5. Saves AI Analysis & Resume Data" --> DB
     API -- "6. Caches JSON for 24 Hours" --> Cache
     
-    API -- "7. Returns JSON Data" --> Client
+    API -- "5. Saves AI Analysis & Resume Data" --> DB
 ```
 
 ---
