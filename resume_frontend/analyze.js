@@ -160,7 +160,7 @@ uploadForm.addEventListener('submit', async (e) => {
 
     try {
         // Call local backend API
-        const response = await fetch('http://127.0.0.1:8000/analyze', {
+        const response = await fetch('https://ats-resume-checker-00jy.onrender.com/analyze', {
             method: 'POST',
             body: formData
         });

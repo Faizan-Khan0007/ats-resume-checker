@@ -16,7 +16,7 @@ ResumeIQ is an open-source, production-grade SaaS pipeline engineered to dismant
 * **API Microservice:** Asynchronous **FastAPI (Python 3.11+)** contextually isolated on **Render**.
 * **Relational Storage:** Serverless transactional **PostgreSQL** provisioned over compute-decoupled architectures on **Neon Database**.
 * **Caching & Performance Optimization:** Low-latency storage instance utilizing **Upstash Redis** for real-time query deduplication and 24-hour TTL invalidation.
-* **Upstream Inference Engine:** Modern structural generation utilizing the official **Google GenAI SDK** targeting **Gemini 2.5 Flash**.
+* **Upstream Inference Engine:** Modern structural generation utilizing the **Groq API** targeting **Llama 3.3 70B Versatile** on specialized LPU hardware for near-instant inference.
 
 ---
 
@@ -38,7 +38,7 @@ flowchart TD
 
     %% Top Level
     Client["💻 Client (Vanilla JS)"]:::frontend
-    AI["🧠 Google Gemini API (gemini-2.5-flash)"]:::external
+    AI["🧠 Groq API (llama-3.3-70b-versatile)"]:::external
 
     subgraph ResumeIQ Backend
         API{"🚀 FastAPI Engine"}:::backend
@@ -77,7 +77,7 @@ flowchart TD
 Before getting started, make sure you have:
 
 - Python 3.11+
-- A Google Gemini API Key
+- A Groq API Key
 - Upstash Redis Database URL
 - Neon PostgreSQL Database URL
 
@@ -127,7 +127,7 @@ Create a `.env` file in the project root directory and add the following:
 ```env
 DATABASE_URL=your_neon_postgres_url
 REDIS_URL=your_upstash_redis_url
-GEMINI_API_KEY=your_gemini_api_key
+GROQ_API_KEY=your_groq_api_key
 ```
 
 ---
