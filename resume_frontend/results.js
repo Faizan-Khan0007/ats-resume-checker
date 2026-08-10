@@ -117,9 +117,9 @@ function renderRewrites(rewrites) {
         const div = document.createElement('div');
         div.className = 'rewrite-block';
         div.innerHTML = `
-            <div class="weak-line">"${item.original_line}"</div>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;"><strong>Why it's weak:</strong> ${item.why_its_weak}</p>
-            <div class="strong-line">Try this instead: <br>➔ "${item.rewritten_options[0]}"</div>
+            <div class="weak-line">${item.original_line}</div>
+            <div class="why-weak-text"><strong>Analysis:</strong> ${item.why_its_weak}</div>
+            <div class="strong-line">${item.rewritten_options[0]}</div>
         `;
         container.appendChild(div);
     });
@@ -136,9 +136,9 @@ function renderStrategies(strategies) {
         const div = document.createElement('div');
         div.className = 'strategy-block';
         div.innerHTML = `
-            <strong style="color: white;">Missing: ${item.missing_keyword}</strong>
+            <strong style="color: var(--text-primary);">Missing: ${item.missing_keyword}</strong>
             <p style="color: var(--text-secondary); margin: 8px 0; font-size: 0.95rem;"><strong>Where to put it:</strong> ${item.where_to_add}</p>
-            <div style="background-color: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; font-style: italic; color: #a1a1aa;">
+            <div style="background-color: var(--bg-primary); padding: 12px; border-radius: 6px; font-style: italic; color: var(--text-secondary); border: 1px solid var(--border-color);">
                 " ${item.example_sentence} "
             </div>
         `;

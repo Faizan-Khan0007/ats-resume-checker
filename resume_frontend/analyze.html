@@ -5,20 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Resume | ResumeIQ</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
 </head>
 <body>
     <nav class="navbar">
         <a href="index.html" class="logo">Resume<span class="accent-text">IQ</span></a>
         <div class="nav-links">
-            <a href="history.html" class="nav-link">History</a>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+            <a href="history.html" class="nav-link">Audit History</a>
+            <div class="auth-group">
+                <a href="#" class="nav-link">Sign In</a>
+            </div>
         </div>
     </nav>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
 
     <main class="upload-container">
         <div class="upload-card">
             <h2>Let's analyze your resume</h2>
-            <p class="subtitle">Upload your PDF and tell us your target role.</p>
+            <p class="subtitle" style="text-align: center; margin-bottom: 32px; font-size: 1rem;">Upload your PDF and tell us your target role.</p>
 
             <form id="uploadForm">
                 <div class="input-group">
@@ -27,15 +40,15 @@
                 </div>
 
                 <div class="drop-zone" id="dropZone">
-                    <div class="icon">📄</div>
+                    <div class="icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    </div>
                     <span class="drop-text">Drag & drop your PDF here</span>
                     <span class="or-text">or</span>
                     <input type="file" id="fileInput" accept="application/pdf" hidden>
-                    <button type="button" class="btn-outline" id="browseBtn">Browse Files</button>
-                    <div id="fileNameDisplay" class="file-name-display"></div>
+                    <button type="button" class="btn-secondary" id="browseBtn">Browse Files</button>
+                    <div id="fileNameDisplay" class="file-name-display hidden"></div>
                 </div>
-
-                <div id="errorMessage" class="error-message"></div>
 
                 <button type="submit" class="btn-primary btn-full" id="analyzeBtn" disabled>
                     Analyze My Resume &rarr;
@@ -45,11 +58,38 @@
     </main>
 
     <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="spinner"></div>
-        <h3>🤖 AI is analyzing your resume...</h3>
-        <p>This usually takes about 10-15 seconds.</p>
+        <div class="loading-card">
+            <!-- Left Side: Skeleton Score -->
+            <div class="skeleton-graph">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-circle"></div>
+                <div class="skeleton-line" style="width: 80%"></div>
+                <div class="skeleton-line" style="width: 60%"></div>
+            </div>
+            
+            <!-- Right Side: Progress Checklist -->
+            <div class="progress-steps">
+                <div class="step-item" id="step-1">
+                    <div class="step-icon">✓</div>
+                    <div class="step-text">Parsing your resume</div>
+                </div>
+                <div class="step-item" id="step-2">
+                    <div class="step-icon">✓</div>
+                    <div class="step-text">Analyzing your experience</div>
+                </div>
+                <div class="step-item" id="step-3">
+                    <div class="step-icon">✓</div>
+                    <div class="step-text">Extracting your skills</div>
+                </div>
+                <div class="step-item" id="step-4">
+                    <div class="step-icon">✓</div>
+                    <div class="step-text">Generating recommendations</div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <script src="theme.js"></script>
     <script src="analyze.js"></script>
 </body>
 </html>

@@ -19,14 +19,21 @@ def generate_cache_key(resume_text: str, job_role: str) -> str:
 
 def get_cached_analysis(cache_key: str):
     """Checks Redis for the cache key. Returns the parsed Pydantic object if found."""
-    cached_data = redis_client.get(cache_key)
-    if cached_data:
-        # Convert the raw JSON string back into our Pydantic model
-        return ResumeAnalysis.model_validate_json(cached_data)
+    try:
+        cached_data = redis_client.get(cache_key)
+        if cached_data:
+            # Convert the raw JSON string back into our Pydantic model
+            return ResumeAnalysis.model_validate_json(cached_data)
+    except redis.exceptions.ConnectionError:
+        print("⚠️ Warning: Redis is not running. Bypassing cache.")
+        return None
     return None
 
 def set_cached_analysis(cache_key: str, analysis: ResumeAnalysis):
     """Saves the AI result to Redis for 24 hours (86400 seconds)."""
     # Convert the Pydantic model to a JSON string
     json_data = analysis.model_dump_json()
-    redis_client.setex(cache_key, 86400, json_data)
+    try:
+        redis_client.setex(cache_key, 86400, json_data)
+    except redis.exceptions.ConnectionError:
+        print("⚠️ Warning: Redis is not running. Could not save to cache.")

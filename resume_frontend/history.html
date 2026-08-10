@@ -5,32 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analysis History | ResumeIQ</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
 </head>
 <body>
     <nav class="navbar">
         <a href="index.html" class="logo">Resume<span class="accent-text">IQ</span></a>
-        <div>
-            <a href="history.html" style="color: white; margin-right: 20px;">History</a>
-            <a href="analyze.html" class="btn-primary">New Analysis</a>
+        <div class="nav-links">
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+            <a href="history.html" class="nav-link" style="color: var(--text-primary); font-weight: 600;">Audit History</a>
+            <div class="auth-group">
+                <a href="analyze.html" class="btn-primary">New Analysis</a>
+            </div>
         </div>
     </nav>
 
     <main class="dashboard-container">
-        <div style="margin-bottom: 30px;">
-            <h2>Past Analyses</h2>
-            <p class="subtitle">Review your previous resume ATS scores and target roles.</p>
+        <div class="dashboard-header">
+            <div>
+                <h1>Audit History</h1>
+                <p class="subtitle" style="margin-bottom: 0;">Review your previous resume ATS scores and target roles.</p>
+            </div>
         </div>
+
+        <!-- Toast Notification Container -->
+        <div id="toast-container"></div>
 
         <div class="history-grid" id="historyGrid"></div>
 
-        <div id="emptyState" class="drop-zone hidden" style="border: none; margin-top: 40px;">
+        <div id="emptyState" class="drop-zone hidden" style="border: none; margin-top: 40px; background: transparent;">
             <div class="icon">📭</div>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">No analyses found yet.</p>
-            <a href="analyze.html" class="btn-outline">Analyze your first resume</a>
+            <p style="color: var(--text-secondary); margin-bottom: 24px; font-weight: 500;">No analyses found yet.</p>
+            <a href="analyze.html" class="btn-secondary">Analyze your first resume</a>
         </div>
     </main>
 
+    <script src="theme.js"></script>
     <script src="history.js"></script>
 </body>
 </html>

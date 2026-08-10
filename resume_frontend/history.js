@@ -1,10 +1,27 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const grid = document.getElementById('historyGrid');
     const emptyState = document.getElementById('emptyState');
+    const toastContainer = document.getElementById('toast-container');
+
+    function showToast(message, type = 'error') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        let icon = type === 'error' ? '⚠️' : '✅';
+        toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+        
+        toastContainer.appendChild(toast);
+        
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
 
     try {
-        // Fetch data from our new FastAPI endpoint
-        const response = await fetch('https://ats-resume-checker-00jy.onrender.com/history');
+        // Fetch data from local backend API
+        const response = await fetch('http://127.0.0.1:8000/history');
         
         if (!response.ok) {
             throw new Error('Failed to fetch history from the server.');
@@ -20,14 +37,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Loop through the database results and build a card for each one
         data.forEach(item => {
-            // Format the timestamp into a readable date (e.g., "May 25, 2026")
             const dateStr = new Date(item.created_at).toLocaleDateString('en-US', {
                 month: 'short', day: 'numeric', year: 'numeric'
             });
 
-            // Determine the color of the score ring based on the result
-            let scoreColor = '#22c55e'; // Green
-            if (item.ats_score < 50) scoreColor = '#ef4444'; // Red
+            // Determine the color of the score ring
+            let scoreColor = 'var(--success)'; 
+            if (item.ats_score < 50) scoreColor = 'var(--danger)'; 
             else if (item.ats_score < 75) scoreColor = '#eab308'; // Yellow
 
             const card = document.createElement('div');
@@ -38,13 +54,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div class="history-role">${item.job_role}</div>
                         <div class="history-filename">📄 ${item.filename}</div>
                     </div>
-                    <div class="history-score-circle" style="color: ${scoreColor}; border: 2px solid ${scoreColor};">
+                    <div class="history-score-circle" style="color: ${scoreColor}; border-color: ${scoreColor};">
                         ${item.ats_score}
                     </div>
                 </div>
                 <div class="history-footer">
                     <span>${dateStr}</span>
-                    <span style="color: var(--text-secondary);">ID: #${item.id}</span>
+                    <span>ID: #${item.id}</span>
                 </div>
             `;
             
@@ -53,6 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (error) {
         console.error(error);
-        grid.innerHTML = `<p class="error-message" style="grid-column: 1/-1;">Connection error. Make sure your FastAPI backend is running.</p>`;
+        showToast('Connection error. Make sure your backend is running.', 'error');
+        emptyState.classList.remove('hidden');
     }
 });
